@@ -1,5 +1,20 @@
 import { describe, expect, it } from 'vitest';
 import { auroraProbability, kpNeeded, nightMaxKp } from '../src/aurora';
+import { validSpot, type Spot } from '../src/data';
+import { esc } from '../src/ui';
+
+describe('sécurité des données affichées', () => {
+  const ok: Spot = { id: 'n123', name: 'Col', kind: 'col', lat: 44, lon: 6, ele: 1200, sqm: 21.5 };
+  it('rejette les spots malformés', () => {
+    expect(validSpot(ok)).toBe(true);
+    expect(validSpot({ ...ok, id: 'n1"><script>' })).toBe(false);
+    expect(validSpot({ ...ok, kind: 'x' as Spot['kind'] })).toBe(false);
+    expect(validSpot({ ...ok, lat: NaN })).toBe(false);
+  });
+  it('échappe le HTML', () => {
+    expect(esc('<img src=x onerror="a">&\'')).toBe('&lt;img src=x onerror=&quot;a&quot;&gt;&amp;&#39;');
+  });
+});
 import { DEFAULT_STATE, parseHash, toHash } from '../src/state';
 
 describe('état dans le hash', () => {

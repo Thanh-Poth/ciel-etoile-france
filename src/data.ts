@@ -78,7 +78,19 @@ export async function loadLight(): Promise<LightGrid> {
 
 export const loadWeather = () => getJson<WeatherGrid>('weather.json');
 export const loadAurora = () => getJson<KpForecast>('aurora.json');
-export const loadSpots = async () => (await getJson<{ spots: Spot[] }>('spots.json'))?.spots ?? [];
+/** Ne garde que les spots bien formés (les noms sont échappés à l'affichage, l'identifiant sert dans une URL OSM). */
+export function validSpot(s: Spot): boolean {
+  return (
+    typeof s?.id === 'string' &&
+    /^n\d{1,15}$/.test(s.id) &&
+    typeof s.name === 'string' &&
+    ['col', 'belvedere', 'sommet'].includes(s.kind) &&
+    [s.lat, s.lon, s.sqm].every(Number.isFinite) &&
+    (s.ele === null || Number.isFinite(s.ele))
+  );
+}
+
+export const loadSpots = async () => ((await getJson<{ spots: Spot[] }>('spots.json'))?.spots ?? []).filter(validSpot);
 
 export interface Commune {
   nom: string;

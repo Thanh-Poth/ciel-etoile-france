@@ -17,8 +17,8 @@ export const KIND_LABEL = { col: 'Col', belvedere: 'Belvédère', sommet: 'Somme
 export function scoreBadge(v: number | null): string {
   if (v === null) return '<span class="badge na">—</span>';
   const r = Math.round(v);
-  // Texte clair sur les teintes sombres (scores faibles), foncé sur les teintes claires.
-  return `<span class="badge" style="--c:${scoreCss(r)};--t:${r < 55 ? '#fff' : '#10121f'}" aria-label="score ${r} sur 100">${r}</span>`;
+  // Anneau à la couleur du score, chiffre blanc sur fond sombre : contraste garanti quelle que soit la teinte.
+  return `<span class="badge" style="--c:${scoreCss(r)}" aria-label="score ${r} sur 100">${r}</span>`;
 }
 
 export const scoreWord = (v: number | null) =>

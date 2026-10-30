@@ -150,6 +150,15 @@ Ces pondérations sont empiriques. Elles sont faites pour classer les zones entr
 - L'état de l'application (objectif, nuit, vue) est stocké dans le hash de l'URL, qui n'est jamais envoyé au serveur.
 - Le dépôt ne contient aucune donnée personnelle (auteur des commits : `anonymous`), et `.env` est exclu par `.gitignore`.
 
+## Sécurité
+
+- **Aucun secret** : ni clé API, ni jeton, ni mot de passe dans le code ou le workflow (toutes les sources sont publiques et sans clé).
+- **Politique CSP** injectée au build : scripts du site uniquement (pas de script en ligne ni d'`eval`), connexions limitées au site et au serveur du fond de carte, `object-src 'none'`, `base-uri 'none'`, `form-action 'none'`. Avec un style PMTiles personnel, son origine est ajoutée automatiquement (`VITE_MAP_STYLE`, ou `VITE_EXTRA_ORIGINS` pour d'autres origines).
+- **Données affichées** : les noms issus d'OpenStreetMap et des communes sont échappés avant insertion HTML. Les spots sont validés au chargement (identifiant, type, coordonnées). L'état lu dans l'URL est filtré par une liste blanche.
+- **Workflow** : permissions minimales par job (`contents: read` pour le build ; `pages: write` et `id-token: write` pour la seule publication), actions épinglées par SHA de commit, `persist-credentials: false`, `npm ci --ignore-scripts`, `npm audit` bloquant sur les failles hautes.
+- **Dependabot** propose chaque mois les mises à jour npm et GitHub Actions.
+- Liens externes en `rel="noopener noreferrer"` et `referrer` désactivé.
+
 ## Avertissements
 
 Routes de montagne de nuit (verglas, faune, absence de réseau), cols d'altitude fermés l'hiver, froid nocturne même en été, stationnement interdit sur les terrains privés et dans certaines zones protégées : la présence d'un parking dans OpenStreetMap ne garantit pas qu'il soit autorisé la nuit. Les prévisions nuageuses sont indicatives.
