@@ -1,0 +1,12 @@
+node_modules/
+dist/
+.cache/
+.env
+.env.*
+*.local
+*.tif
+*.zip
+coverage/
+# Données régénérées par le workflow planifié (non versionnées)
+public/data/weather.json
+public/data/aurora.json

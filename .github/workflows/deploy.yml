@@ -1,0 +1,50 @@
+# Récupère les prévisions toutes les 3 heures, construit le site statique et le publie sur GitHub Pages.
+# Aucun secret ni clé API n'est nécessaire.
+name: Prévisions et déploiement
+
+on:
+  schedule:
+    - cron: '20 */3 * * *' # toutes les 3 h (UTC), décalé de l'heure pile pour éviter les pics
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm test
+      # En cas d'échec (API indisponible), le job échoue et la version déjà en ligne reste servie.
+      - name: Prévisions Open-Meteo et indice Kp NOAA
+        run: npm run fetch:weather
+      - run: npm run build
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="description" content="Où observer le ciel étoilé en France ce soir et les 3 prochaines nuits : score par zone, pollution lumineuse, Lune, nuages et spots accessibles." />
+    <meta name="referrer" content="no-referrer" />
+    <meta name="theme-color" content="#05060f" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='8' fill='%2305060f'/%3E%3Cpath d='M8 3l1.2 3.1 3.3.2-2.6 2 .9 3.2L8 9.7l-2.8 1.8.9-3.2-2.6-2 3.3-.2z' fill='%23f9f596'/%3E%3C/svg%3E" />
+    <title>Ciel étoilé France</title>
+  </head>
+  <body>
+    <a class="skip" href="#panel">Aller au panneau</a>
+    <div id="app">
+      <main id="map" aria-label="Carte du score d'observation"></main>
+      <aside id="panel" aria-label="Panneau de contrôle et résultats" tabindex="-1">
+        <header class="panel-head">
+          <h1>Ciel étoilé <span>France</span></h1>
+          <div class="head-actions">
+            <button id="red-toggle" type="button" aria-pressed="false" title="Mode lumière rouge (préserve la vision nocturne)">Rouge</button>
+            <button id="panel-toggle" type="button" aria-expanded="true" aria-controls="panel-body">Réduire</button>
+          </div>
+        </header>
+        <div id="panel-body">
+          <fieldset class="objectives">
+            <legend>Que voulez-vous observer ?</legend>
+            <div id="objectives" class="chips"></div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Quelle nuit ?</legend>
+            <div id="nights" class="chips"></div>
+          </fieldset>
+
+          <div class="search-row">
+            <label for="search" class="sr-only">Rechercher une commune</label>
+            <input id="search" type="search" list="search-list" placeholder="Rechercher une commune…" autocomplete="off" />
+            <datalist id="search-list"></datalist>
+            <button id="locate" type="button" title="Utilise la position de votre appareil, calculée uniquement dans votre navigateur">Me localiser</button>
+          </div>
+
+          <fieldset>
+            <legend>Couches</legend>
+            <div class="layers">
+              <label><input type="checkbox" data-layer="score" checked /> Score de la nuit</label>
+              <label><input type="checkbox" data-layer="light" /> Pollution lumineuse</label>
+              <label><input type="checkbox" data-layer="spots" checked /> Spots</label>
+              <label><input type="checkbox" data-layer="reserves" checked /> Réserves de ciel étoilé</label>
+            </div>
+            <div id="legend" class="legend"></div>
+          </fieldset>
+
+          <p id="status" class="status" role="status" aria-live="polite"></p>
+
+          <section id="selection" aria-live="polite"></section>
+          <section id="tonight"></section>
+          <section id="top-spots"></section>
+
+          <section class="warnings" aria-labelledby="warn-title">
+            <h2 id="warn-title">Prudence</h2>
+            <ul>
+              <li>Routes de montagne de nuit : verglas possible, faune, absence de réseau. Prévenez un proche.</li>
+              <li>Beaucoup de cols d’altitude sont fermés l’hiver (Bonette, Iseran, Agnel…) : vérifiez l’ouverture des routes.</li>
+              <li>Froid nocturne même en été en altitude : vêtements chauds, couverture de survie.</li>
+              <li>Ne stationnez pas sur des terrains privés, des voies forestières fermées ou en zone interdite (cœurs de parcs, pistes).</li>
+              <li>Les prévisions nuageuses sont indicatives : vérifiez avant de partir.</li>
+            </ul>
+          </section>
+
+          <details class="sources">
+            <summary>Sources, licences et confidentialité</summary>
+            <ul>
+              <li>Pollution lumineuse : Falchi et al. (2016), <a href="https://doi.org/10.5880/GFZ.1.4.2016.001" rel="noopener noreferrer">World Atlas of Artificial Night Sky Brightness</a>, GFZ Data Services — CC BY-NC 4.0 (données 2015, ré-échantillonnées).</li>
+              <li>Météo : <a href="https://open-meteo.com/" rel="noopener noreferrer">Open-Meteo.com</a> — CC BY 4.0, usage non commercial.</li>
+              <li>Spots : © contributeurs <a href="https://www.openstreetmap.org/copyright" rel="noopener noreferrer">OpenStreetMap</a> — ODbL 1.0.</li>
+              <li>Fond de carte : <a href="https://openfreemap.org/" rel="noopener noreferrer">OpenFreeMap</a>, © OpenMapTiles, données OpenStreetMap.</li>
+              <li>Communes : geo.api.gouv.fr — Licence Ouverte 2.0. Contours : Natural Earth (domaine public).</li>
+              <li>Indice Kp : NOAA Space Weather Prediction Center (domaine public).</li>
+              <li>Éphémérides : astronomy-engine (MIT), calculées dans votre navigateur.</li>
+              <li>Réserves de ciel étoilé : positions approximatives, d'après DarkSky International (à vérifier).</li>
+            </ul>
+            <p>Confidentialité : aucun compte, aucun cookie, aucune mesure d'audience. La position (« Me localiser ») et la recherche de commune sont traitées uniquement dans votre navigateur. Seules les tuiles du fond de carte sont chargées depuis OpenFreeMap.</p>
+            <p id="freshness"></p>
+          </details>
+        </div>
+      </aside>
+    </div>
+    <noscript><p style="padding:16px">Cette application nécessite JavaScript (aucun traceur n’est utilisé).</p></noscript>
+    <div id="red-filter" aria-hidden="true"></div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

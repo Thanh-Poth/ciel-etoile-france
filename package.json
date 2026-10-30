@@ -1,0 +1,35 @@
+{
+  "name": "ciel-etoile-france",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Meilleurs spots d'observation du ciel étoilé en France métropolitaine, ce soir et les 3 prochaines nuits.",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "lint": "eslint .",
+    "prepare:light": "node scripts/prepare-light.mjs",
+    "prepare:communes": "node scripts/prepare-communes.mjs",
+    "prepare:spots": "node scripts/prepare-spots.mjs",
+    "fetch:weather": "node scripts/fetch-weather.mjs"
+  },
+  "dependencies": {
+    "astronomy-engine": "^2.1.19",
+    "maplibre-gl": "^6.16.0",
+    "pmtiles": "^4.5.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/geojson": "^7946.0.16",
+    "eslint": "^10.14.0",
+    "geotiff": "^3.0.5",
+    "globals": "^17.13.0",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.72.1",
+    "vite": "^8.3.5",
+    "vitest": "^5.0.5"
+  }
+}
